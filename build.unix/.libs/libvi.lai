@@ -14,7 +14,7 @@ library_names='libvi.so.0.0.0 libvi.so.0 libvi.so'
 old_library='libvi.a'
 
 # Libraries that this one depends upon.
-dependency_libs=' -ldb'
+dependency_libs=' -L/usr/local/lib -ldb'
 
 # Version information for libvi.
 current=0
