@@ -6,6 +6,14 @@ n, N <-> j, J
 e, E <-> k, K
 i, I <-> l, L
 
+	cd build.unix
+	LDFLAGS="-L/usr/local/lib -Wl,--rpath -Wl,/usr/local/lib" ../dist/configure --program-prefix=n
+	sudo make clean install
+	sudo ldconfig
+
+
+# Original readme
+
 #	$Id: README,v 8.153 2001/04/30 09:31:12 skimo Exp $ (Berkeley) $Date: 2001/04/30 09:31:12 $
 
 This is version 1.81.6 (2007-11-18) of nex/nvi, a reimplementation of the ex/vi
