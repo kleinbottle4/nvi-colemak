@@ -1,0 +1,74 @@
+#!/usr/bin/make -f
+# debian/rules file for nvi. Based on:
+#   Sample debian/rules that uses debhelper. GNU copyright 1997 by Joey Hess.
+
+export DH_VERBOSE=1
+
+curdir=$(shell pwd)
+
+DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
+export DEB_BUILD_MAINT_OPTIONS := hardening=+all
+include /usr/share/dpkg/buildflags.mk
+
+ifeq ($(filter nostrip,$(DEB_BUILD_OPTIONS)),nostrip)
+	make_deb_args=strip=/bin/true
+else
+	make_deb_args=
+endif
+
+%:
+	dh $@ --with=systemd
+
+override_dh_auto_clean:
+	rm -f dist/recover
+	rm -f dist/config.sub dist/config.guess
+	[ ! -f build.unix/Makefile ] || $(MAKE) -C build.unix distclean
+	find build.unix -type f -and -not -name 'README*' -print0 | xargs -0 rm -f
+
+override_dh_auto_configure:
+	cp -f /usr/share/misc/config.guess /usr/share/misc/config.sub dist/
+	cd build.unix && \
+	  OPTFLAG="$(CFLAGS)" \
+	  ADDCPPFLAGS="$(CPPFLAGS)" \
+	  ADDLDFLAGS="$(LDFLAGS)" \
+	  ac_cv_path_vi_cv_path_sendmail=/usr/sbin/sendmail \
+	  vi_cv_path_shell=/bin/sh \
+	  vi_cv_revoke=no \
+	  ../dist/configure \
+		--build=$(DEB_BUILD_GNU_TYPE) \
+		--host=$(DEB_HOST_GNU_TYPE) \
+		--disable-curses \
+		--prefix=/usr \
+		--disable-shared --enable-static \
+		--enable-widechar \
+		--disable-threads \
+		--without-x \
+		--with-gnu-ld=yes \
+		--datadir='$${prefix}/share' \
+		--mandir='$${prefix}/share/man' \
+		--program-prefix=n
+	sed -i -e '/define.*_PATH_MSGCAT/ s/".*"/"\/usr\/share\/vi\/catalog\/"/' build.unix/pathnames.h
+
+override_dh_auto_build:
+	$(MAKE) -C build.unix
+
+override_dh_auto_install:
+	$(MAKE) -C build.unix install prefix=$(curdir)/debian/nvi/usr $(make_deb_args)
+	-rm -rf \
+		debian/nvi/usr/share/man/cat1 \
+		debian/nvi/usr/lib \
+		debian/nvi/usr/share/vi/perl \
+		debian/nvi/usr/share/vi/tcl
+
+override_dh_installchangelogs-arch:
+	dh_installchangelogs
+	cp nvi-1.79/docs/changelog debian/nvi/usr/share/doc/nvi/changelog_stable
+
+override_dh_installchangelogs-indep:
+	dh_installchangelogs
+	cp nvi-1.79/docs/changelog debian/nvi-doc/usr/share/doc/nvi-doc/changelog_stable
+
+override_dh_compress:
+	dh_compress -Xvi.advanced -Xvi.beginner

@@ -1,0 +1,9 @@
+nvi (1.81.6-12) unstable; urgency=medium
+
+  * The nviboot init script has had functionality moved outside of init
+    and the remainder renamed to nvi.  If you made changes you likely
+    should look at modifying the recover script instead of what's in init.
+  * A systemd unit for nvi was also added that takes precedence if running
+    on a system with systemd.  
+
+ -- Bryan Quigley <bryan.quigley@canonical.com>  Thu, 17 Sep 2015 11:12:47 -0400
