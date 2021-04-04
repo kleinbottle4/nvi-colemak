@@ -262,11 +262,13 @@ VIKEYS const vikeys [MAXVIKEY + 1] = {
 	    "[buffer][count]C",
 	    " C change to end-of-line"},
 /* 104   D */
-	{NULL,		0,
-	    "[buffer]D",
-	    " D delete to end-of-line"},
+	{v_home,	V_ABS_L|V_CNT|V_MOVE|VM_LMODE|VM_RCM_SETNNB,
+	    "[count]D",
+	    " D move to count lines from screen top (normally H)"},
 /* 105   E */
-	{NULL},
+	{v_wordE,	V_CNT|V_MOVE|VM_RCM_SET,
+	    "[count]E",
+	    " E move to end of bigword"},
 /* 106   F */
 	{v_chF,		V_CHAR|V_CNT|V_MOVE|VM_RCM_SET,
 	    "[count]F character",
@@ -276,33 +278,33 @@ VIKEYS const vikeys [MAXVIKEY + 1] = {
 	    "[count]G",
 	    " G move to line"},
 /* 110   H */
-	{v_home,	V_ABS_L|V_CNT|V_MOVE|VM_LMODE|VM_RCM_SETNNB,
+	{v_join,	V_CNT|V_DOT|VM_RCM_SET,
 	    "[count]H",
-	    " H move to count lines from screen top"},
+	    " H join lines (normally J)"},
 /* 111   I */
-	{v_bottom,	V_ABS_L|V_CNT|V_MOVE|VM_LMODE|VM_RCM_SETNNB,
-	    "[count]I",
-	    " I move to screen bottom"},
-/* 112   J */
-	{v_searchN,	V_ABS_C|V_MOVE|VM_CUTREQ|VM_RCM_SET,
-	    "j",
-	    " J reverse last search"},
-/* 113   K */
-	{v_wordE,	V_CNT|V_MOVE|VM_RCM_SET,
-	    "[count]K",
-	    " K move to end of bigword"},
-/* 114   L */
 	{v_iI,		V_CNT|V_DOT|VM_RCM_SET,
 	    "[count]I",
 	    " I insert before first nonblank"},
+/* 112   J */
+	{v_searchN,	V_ABS_C|V_MOVE|VM_CUTREQ|VM_RCM_SET,
+	    "J",
+	    " J reverse last search (normally N)"},
+/* 113   K */
+	{NULL,		0,
+	    "[buffer]K",
+	    " K delete to end-of-line (normally D)"},
+/* 114   L */
+	{v_chT,		V_CHAR|V_CNT|V_MOVE|VM_RCM_SET,
+	    "[count]L character",
+	    " L before character in line backward search (normally T)"},
 /* 115   M */
 	{v_middle,	V_ABS_L|V_CNT|V_MOVE|VM_LMODE|VM_RCM_SETNNB,
 	    "M",
 	    " M move to screen middle"},
 /* 116   N */
-	{v_join,	V_CNT|V_DOT|VM_RCM_SET,
-	    "[count]n",
-	    " N join lines"},
+	{v_bottom,	V_ABS_L|V_CNT|V_MOVE|VM_LMODE|VM_RCM_SETNNB,
+	    "[count]N",
+	    " N move to screen bottom (normally L)"},
 /* 117   O */
 	{v_iO,		V_CNT|V_DOT|VM_RCM_SET,
 	    "[count]O",
@@ -324,9 +326,7 @@ VIKEYS const vikeys [MAXVIKEY + 1] = {
 	    "[buffer][count]S",
 	    " S substitute for the line(s)"},
 /* 124   T */
-	{v_chT,		V_CHAR|V_CNT|V_MOVE|VM_RCM_SET,
-	    "[count]T character",
-	    " T before character in line backward search"},
+	{NULL},
 /* 125   U */
 	{v_Undo,	VM_RCM_SET,
 	    "U",
@@ -393,13 +393,13 @@ VIKEYS const vikeys [MAXVIKEY + 1] = {
 	    "[buffer][count]c[count]motion",
 	    " c change to motion"},
 /* 144   d */
-	{v_delete,	V_CNT|V_DOT|V_MOTION|V_OBUF|VM_RCM_SET,
-	    "[buffer][count]d[count]motion",
-	    " d delete to motion"},
+	{v_left,	V_CNT|V_MOVE|VM_RCM_SET,
+	    "[count]d",
+	    " d move left by columns (normally h)"},
 /* 145   e */
-	{v_up,		V_CNT|V_MOVE|VM_LMODE|VM_RCM,
+	{v_worde,	V_CNT|V_MOVE|VM_RCM_SET,
 	    "[count]e",
-	    " e move up by lines"},
+	    " e move to end of word"},
 /* 146   f */
 	{v_chf,		V_CHAR|V_CNT|V_MOVE|VM_RCM_SET,
 	    "[count]f character",
@@ -407,33 +407,33 @@ VIKEYS const vikeys [MAXVIKEY + 1] = {
 /* 147   g */
 	{NULL},
 /* 150   h */
-	{v_left,	V_CNT|V_MOVE|VM_RCM_SET,
+	{v_down,	V_CNT|V_MOVE|VM_LMODE|VM_RCM,
 	    "[count]h",
-	    " h move left by columns"},
+	    " h move down by lines (normally j)"},
 /* 151   i */
-	{v_right,	V_CNT|V_MOVE|VM_RCM_SET,
+	{v_ii,		V_CNT|V_DOT|VM_RCM_SET,
 	    "[count]i",
-	    " i move right by columns"},
+	    " i insert before cursor"},
 /* 152   j */
 	{v_searchn,	V_ABS_C|V_MOVE|VM_CUTREQ|VM_RCM_SET,
 	    "j",
-	    " j repeat last search"},
+	    " j repeat last search (normally n)"},
 /* 153   k */
-	{v_worde,	V_CNT|V_MOVE|VM_RCM_SET,
-	    "[count]k",
-	    " k move to end of word"},
+	{v_delete,	V_CNT|V_DOT|V_MOTION|V_OBUF|VM_RCM_SET,
+	    "[buffer][count]k[count]motion",
+	    " k delete to motion (normally d)"},
 /* 154   l */
-	{v_ii,		V_CNT|V_DOT|VM_RCM_SET,
-	    "[count]l",
-	    " l insert before cursor"},
+	{v_cht,		V_CHAR|V_CNT|V_MOVE|VM_RCM_SET,
+	    "[count]l character",
+	    " l before character in line forward search (normally t)"},
 /* 155   m */
 	{v_mark,	V_CHAR,
 	    "m[a-z]",
 	    " m set mark"},
 /* 156   n */
-	{v_down,	V_CNT|V_MOVE|VM_LMODE|VM_RCM,
+	{v_right,	V_CNT|V_MOVE|VM_RCM_SET,
 	    "[count]n",
-	    " n move down by lines"},
+	    " n move right by columns (normally l)"},
 /* 157   o */
 	{v_io,		V_CNT|V_DOT|VM_RCM_SET,
 	    "[count]o",
@@ -453,9 +453,9 @@ VIKEYS const vikeys [MAXVIKEY + 1] = {
 	    "[buffer][count]s",
 	    " s substitute character"},
 /* 164   t */
-	{v_cht,		V_CHAR|V_CNT|V_MOVE|VM_RCM_SET,
-	    "[count]t character",
-	    " t before character in line forward search"},
+	{v_up,		V_CNT|V_MOVE|VM_LMODE|VM_RCM,
+	    "[count]t",
+	    " t move up by lines (normally k)"},
 /* 165   u */
 	/*
 	 * DON'T set the V_DOT flag, it' more complicated than that.

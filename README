@@ -1,10 +1,15 @@
-# nvi-colemak
+# nvi-dvorjak
 
-nvi but with colemak keybindings
+nvi but with Dvorak keybindings
 
-n, N <-> j, J
-e, E <-> k, K
-i, I <-> l, L
+d, D -> h, H
+h, H -> j, J
+t, T -> k, K
+n, N -> l, L
+
+n, N <- j, J
+d, D <- k, K
+t, T <- l, L
 
 	cd build.unix
 	LDFLAGS="-L/usr/local/lib -Wl,--rpath -Wl,/usr/local/lib" ../dist/configure --program-prefix=n

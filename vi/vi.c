@@ -1125,9 +1125,9 @@ v_alias(SCR *sp, VICMD *vp, const VIKEYS *kp)
 		push = '$';
 		vp->key = 'c';
 		break;
-	case 'D':			/* D -> d$ */
+	case 'K':			/* K -> k$ (normally D -> d$) */
 		push = '$';
-		vp->key = 'd';
+		vp->key = 'k';
 		break;
 	case 'S':			/* S -> c_ */
 		push = '_';
